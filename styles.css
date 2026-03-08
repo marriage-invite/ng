@@ -1,0 +1,708 @@
+/* ================================================================
+   WEDDING INVITATION — styles.css
+   Nagraj & Granthali · 26 April 2026
+================================================================ */
+
+/* ── CUSTOM PROPERTIES ──────────────────────────────────────── */
+:root {
+  --ivory:       #FAF4ED;
+  --ivory-deep:  #F2E8D8;
+  --cream:       #FDF9F4;
+  --brown-deep:  #1A0A02;
+  --brown-mid:   #4A2010;
+  --brown-soft:  #6B3A1A;
+  --gold:        #7A4E20;
+  --gold-rich:   #8A5520;
+  --gold-light:  #9C6B30;
+  --gold-pale:   #C09860;
+  --blush:       #9A7040;
+  --blush-deep:  #6A3A10;
+  --text-dark:   #200E04;
+  --text-mid:    #2E1005;
+  --text-soft:   #4A2808;
+}
+
+/* ── RESET & BASE ───────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--ivory);
+  color: var(--brown-deep);
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Grain overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 980;
+}
+
+/* Ambient glow */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 65% 45% at 15% 5%,  rgba(210,165,105,0.11) 0%, transparent 60%),
+    radial-gradient(ellipse 55% 55% at 85% 95%, rgba(180,120,70,0.08)  0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ================================================================
+   INTRO OVERLAY — lighter warm background
+================================================================ */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  /* Warm ivory-to-blush gradient — feels like aged parchment */
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 25%, #FBF0E2 0%, #F0DEC8 55%, #E2C9A8 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* No cursor:pointer — clicking overlay does nothing */
+  cursor: default;
+  transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1),
+              visibility 1.4s ease;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
+}
+
+/* Soft vignette at edges */
+#intro-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 100% at 50% 50%,
+    transparent 50%,
+    rgba(160, 110, 60, 0.12) 100%);
+  pointer-events: none;
+}
+
+/* Subtle grain on intro too */
+#intro-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+#intro-overlay.fade-away {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.intro-wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 2rem 2.5rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Eyebrow — was near invisible, now rich dark gold */
+.intro-eyebrow {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.62rem, 2.2vw, 0.72rem);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--blush-deep);
+  margin-bottom: 1.8rem;
+}
+
+.intro-flourish {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 1.8rem;
+}
+
+.intro-flourish-line {
+  flex: 1;
+  max-width: 75px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(140, 90, 40, 0.5));
+}
+.intro-flourish-line.r {
+  background: linear-gradient(to left, transparent, rgba(140, 90, 40, 0.5));
+}
+
+/* Names — dark on light background */
+.intro-name {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3.4rem, 14vw, 5.2rem);
+  color: var(--brown-deep);
+  line-height: 1;
+  animation: name-breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes name-breathe {
+  from { text-shadow: 0 2px 20px rgba(140, 90, 40, 0.15); }
+  to   { text-shadow: 0 4px 40px rgba(140, 90, 40, 0.30); }
+}
+
+.intro-amp {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.6rem, 6vw, 2.4rem);
+  color: var(--gold-rich);
+  margin: 0.2rem 0;
+}
+
+/* ── TAP ZONE — the ONLY clickable thing on intro ─────────── */
+.tap-zone {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+/* This button IS the entry point */
+#tap-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  /* Generous hit area */
+  padding: 1.2rem;
+}
+
+#tap-btn:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+.tap-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(140, 90, 40, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: ring-pulse 2.4s ease-in-out infinite;
+  background: rgba(200, 150, 90, 0.07);
+}
+
+.tap-ring::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 90, 40, 0.25);
+  animation: ripple-out 2.4s ease-out infinite;
+}
+
+.tap-ring::after {
+  content: '';
+  position: absolute;
+  inset: -22px;
+  border-radius: 50%;
+  border: 1px solid rgba(140, 90, 40, 0.12);
+  animation: ripple-out 2.4s ease-out 0.45s infinite;
+}
+
+.tap-inner {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(156, 107, 56, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#tap-btn:hover .tap-inner,
+#tap-btn:active .tap-inner {
+  background: rgba(156, 107, 56, 0.22);
+  transform: scale(1.08);
+}
+
+@keyframes ring-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.06); }
+}
+
+@keyframes ripple-out {
+  0%   { transform: scale(0.9);  opacity: 0.7; }
+  100% { transform: scale(1.55); opacity: 0;   }
+}
+
+/* Tap label — was nearly invisible, now solid dark */
+.tap-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.62rem, 2vw, 0.7rem);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+}
+
+/* ================================================================
+   MUTE / UNMUTE BUTTON
+================================================================ */
+#mute-btn {
+  position: fixed;
+  top: 1.1rem;
+  right: 1.1rem;
+  z-index: 800;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(250, 244, 237, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(156, 107, 56, 0.3);
+  box-shadow: 0 4px 20px rgba(36, 18, 8, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(-12px);
+  transition: opacity 0.6s ease, transform 0.6s ease,
+              background 0.3s ease, border-color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+#mute-btn.shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+#mute-btn:hover {
+  background: rgba(253, 249, 244, 0.98);
+  border-color: rgba(156, 107, 56, 0.55);
+}
+#mute-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: var(--gold);
+}
+#icon-mute { display: none; }
+
+/* ================================================================
+   BUTTERFLY + PETAL LAYER
+================================================================ */
+#butterfly-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  overflow: hidden;
+}
+
+/* ── Butterflies ── */
+.bf {
+  position: absolute;
+  bottom: -70px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.bf svg {
+  display: block;
+  animation: wing-flap var(--wf-dur, 0.4s) ease-in-out infinite alternate;
+}
+
+@keyframes wing-flap {
+  0%   { transform: scaleX(1);    }
+  100% { transform: scaleX(0.22); }
+}
+
+@keyframes float-up {
+  0%   { transform: translateX(0)         translateY(0)                  rotate(0deg);   opacity: 0; }
+  5%   { opacity: var(--bf-opacity, 0.3); }
+  30%  { transform: translateX(var(--sx1)) translateY(var(--sy1))        rotate(var(--r1)); }
+  60%  { transform: translateX(var(--sx2)) translateY(var(--sy2))        rotate(var(--r2)); }
+  88%  { opacity: var(--bf-opacity, 0.28); }
+  100% { transform: translateX(var(--sx3)) translateY(calc(-100vh - 80px)) rotate(var(--r3)); opacity: 0; }
+}
+
+/* ── Petals ── */
+.petal {
+  position: absolute;
+  top: -40px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@keyframes petal-fall {
+  0%   { transform: translateX(0)          translateY(0)    rotate(0deg);   opacity: 0; }
+  8%   { opacity: var(--pt-opacity, 0.35); }
+  40%  { transform: translateX(var(--px1)) translateY(30vh) rotate(var(--pr1)); }
+  75%  { transform: translateX(var(--px2)) translateY(70vh) rotate(var(--pr2)); }
+  92%  { opacity: var(--pt-opacity, 0.28); }
+  100% { transform: translateX(var(--px3)) translateY(105vh) rotate(var(--pr3)); opacity: 0; }
+}
+
+/* ================================================================
+   MAIN INVITATION CONTENT
+================================================================ */
+#invitation {
+  position: relative;
+  z-index: 1;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 0 1.5rem 5rem;
+}
+
+/* ── Entrance animations ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.95s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              transform 0.95s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.reveal.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Eyebrow labels ── */
+.eyebrow {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.6rem, 2vw, 0.68rem);
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--gold-rich);
+  text-align: center;
+}
+
+/* ── Horizontal rules ── */
+.rule {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.4rem 0;
+}
+.rule-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--blush));
+}
+.rule-line.r {
+  background: linear-gradient(to left, transparent, var(--blush));
+}
+.rule-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-pale);
+  flex-shrink: 0;
+}
+
+/* ── Floral ornaments ── */
+.top-floral {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 0 1.5rem;
+}
+.bottom-floral {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem 0 0;
+}
+/* Floating side flowers */
+.side-flower {
+  position: fixed;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+}
+.side-flower.in { opacity: 1; }
+.side-flower--left  { left: -2px;  top: 35vh; }
+.side-flower--right { right: -2px; top: 60vh; }
+
+/* ── Names block ── */
+.names-block { text-align: center; margin: 0.4rem 0; }
+
+.name-script {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(3rem, 13vw, 4.8rem);
+  color: var(--brown-deep);
+  line-height: 1.05;
+}
+
+.amp-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 0.35rem 0;
+}
+.amp-dash {
+  flex: 1;
+  max-width: 50px;
+  height: 1px;
+  background: var(--blush);
+}
+.amp-glyph {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.8rem, 6vw, 2.6rem);
+  color: var(--blush-deep);
+  line-height: 1;
+}
+
+/* ── Together text ── */
+.together-block {
+  text-align: center;
+  padding: 1.6rem 1.5rem;
+}
+.together-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.05rem, 3.6vw, 1.2rem);
+  color: var(--text-mid);
+  line-height: 2;
+  letter-spacing: 0.02em;
+}
+.together-text em {
+  font-family: 'Great Vibes', cursive;
+  font-style: normal;
+  font-size: 1.5em;
+  color: var(--gold-rich);
+  line-height: 1;
+}
+
+/* ── Date card ── */
+.date-card {
+  position: relative;
+  margin: 1.4rem 0;
+  padding: 2.4rem 2rem 2.1rem;
+  background: linear-gradient(145deg,
+    rgba(220, 185, 140, 0.18) 0%,
+    rgba(250, 244, 237, 0.55) 100%);
+  border: 1px solid rgba(156, 107, 56, 0.25);
+}
+
+/* Four corner brackets */
+.date-card::before,
+.date-card::after {
+  content: '';
+  position: absolute;
+  width: 22px; height: 22px;
+  border-color: rgba(156, 107, 56, 0.5);
+  border-style: solid;
+}
+.date-card::before { top: 7px;    left: 7px;  border-width: 1.5px 0 0 1.5px; }
+.date-card::after  { top: 7px;    right: 7px; border-width: 1.5px 1.5px 0 0; }
+.corner-bl { position: absolute; width: 22px; height: 22px; border-color: rgba(156,107,56,0.5); border-style: solid; bottom: 7px; left: 7px;  border-width: 0 0 1.5px 1.5px; }
+.corner-br { position: absolute; width: 22px; height: 22px; border-color: rgba(156,107,56,0.5); border-style: solid; bottom: 7px; right: 7px; border-width: 0 1.5px 1.5px 0; }
+
+.date-label  { margin-bottom: 1.2rem; }
+
+.date-day-name {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.65rem, 2.2vw, 0.75rem);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+.date-numeral {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: clamp(4.5rem, 18vw, 6.5rem);
+  line-height: 0.85;
+  color: var(--brown-deep);
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+.date-month-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  text-align: center;
+  margin-top: 0.4rem;
+}
+.date-separator {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--blush), transparent);
+  margin: 1.5rem auto;
+}
+.time-row   { text-align: center; }
+.time-value {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 6vw, 2.1rem);
+  color: var(--brown-deep);
+  letter-spacing: 0.06em;
+}
+.time-caption {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 0.62rem;
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold-rich);
+  margin-top: 0.3rem;
+}
+
+/* ── Venue section ── */
+.venue-section {
+  text-align: center;
+  padding: 1.8rem 0 0.5rem;
+}
+.venue-name-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 5.5vw, 1.75rem);
+  color: var(--brown-deep);
+  line-height: 1.2;
+  margin: 0.9rem 0 0.5rem;
+  letter-spacing: 0.02em;
+}
+.venue-address-text {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.72rem, 2.5vw, 0.82rem);
+  color: var(--text-mid);
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+  font-style: normal;
+}
+
+/* ── MAP IFRAME ── */
+.venue-map-wrap {
+  position: relative;
+  width: 100%;
+  /* 16:9 aspect ratio */
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 2px;
+  border: 1px solid rgba(156, 107, 56, 0.22);
+  margin-top: 1.4rem;
+  box-shadow: 0 8px 32px rgba(36, 18, 8, 0.1);
+}
+.venue-map-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+
+/* ── Map button (primary CTA) ── */
+.map-btn-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.6rem;
+}
+.map-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.9rem 2.2rem;
+  border: 1.5px solid var(--gold);
+  color: var(--brown-deep);
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: clamp(0.62rem, 2.2vw, 0.7rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-decoration: none;
+  overflow: hidden;
+  transition: color 0.45s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.map-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.map-btn:hover::before,
+.map-btn:active::before { transform: scaleX(1); }
+.map-btn:hover,
+.map-btn:active { color: var(--ivory); }
+.map-btn span { position: relative; z-index: 1; }
+
+/* ── Closing ── */
+.closing-section {
+  text-align: center;
+  padding: 2.5rem 0 0.5rem;
+}
+.closing-love {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2rem, 8vw, 2.8rem);
+  color: var(--gold-rich);
+  line-height: 1.1;
+}
+.closing-names {
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 300;
+  font-size: 0.65rem;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  margin-top: 0.75rem;
+}
+
+/* ── Decorative inline section flowers ── */
+.section-flower {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 380px) {
+  #invitation   { padding: 0 1.1rem 4rem; }
+  .date-card    { padding: 2rem 1.3rem 1.8rem; }
+}
+@media (min-width: 600px) {
+  #invitation   { padding: 0 2rem 5rem; }
+}
+
+/* ── Intro corner brackets ── */
+.intro-corner {
+  position: absolute;
+  pointer-events: none;
+  z-index: 3;
+}
+.intro-corner--tl { top: 16px;    left: 16px;  }
+.intro-corner--tr { top: 16px;    right: 16px; }
+.intro-corner--bl { bottom: 16px; left: 16px;  }
+.intro-corner--br { bottom: 16px; right: 16px; }
